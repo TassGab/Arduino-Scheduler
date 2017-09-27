@@ -48,8 +48,9 @@ class HeaterSchedulerCs
     String TimeToStr(time_t);
     time_t SetTimeOfDay(uint8_t, uint8_t, uint8_t);
     time_t QuartToTime(TimeQuarter_sc);
-  private:
     String EventToStrShort(EventType_sc);
+  private:
+    
     String EventToStrLong(EventType_sc);    
 };
 #endif

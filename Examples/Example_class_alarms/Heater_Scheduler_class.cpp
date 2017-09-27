@@ -26,7 +26,7 @@ time_t HeaterSchedulerCs::QuartToTime(TimeQuarter_sc qt)
   time_t tt;
   if (qt==0)
   {
-    tt=1; //one second  after midnight
+    tt=5; //one second  after midnight
   }
   else
   {
