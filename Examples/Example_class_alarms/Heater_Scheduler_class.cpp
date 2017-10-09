@@ -1,11 +1,11 @@
 #include "Heater_scheduler_class.h"
 #include <Arduino.h>
-String HeaterSchedulerCs::SetEventDay(timeDayOfWeek_t dow, EventNum_sc Evnum, TimeQuarter_sc TimeQ, SwitchState_sc SwSt, SwitchNum_sc SwN)
+String HeaterSchedulerCs::SetEventDay(timeDayOfWeek_t dow, EventNum_sc Evnum, TimeQuarter_sc TimeQ, EventState_sc En, SwitchState_sc SwSt, SwitchNum_sc SwN)
  {
    String s="Dow: ";   
    Sched.WeekSched[dow-1].dow=dow;
    Sched.WeekSched[dow-1].Event[Evnum].EvTimeQ=TimeQ;
-   Sched.WeekSched[dow-1].Event[Evnum].EventCtrl.isEnabled=evEN;
+   Sched.WeekSched[dow-1].Event[Evnum].EventCtrl.isEnabled=En;
    Sched.WeekSched[dow-1].Event[Evnum].EventCtrl.swTurn=SwSt;
    Sched. WeekSched[dow-1].Event[Evnum].EventCtrl.nSwitch=SwN;
 //   Serial.print("DOW=");
@@ -30,7 +30,8 @@ time_t HeaterSchedulerCs::QuartToTime(TimeQuarter_sc qt)
   }
   else
   {
-    tt=qt*SECS_PER_MIN * 15;
+    //tt=qt*SECS_PER_MIN * 15;
+    tt=qt*5+5; //for test every 5 seconds
   }
   return tt;
 }

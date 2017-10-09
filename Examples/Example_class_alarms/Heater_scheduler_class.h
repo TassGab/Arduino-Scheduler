@@ -43,7 +43,7 @@ class HeaterSchedulerCs
 {
   public:
     Sched_sc Sched;
-    String SetEventDay(timeDayOfWeek_t, EventNum_sc, TimeQuarter_sc, SwitchState_sc, SwitchNum_sc);
+    String SetEventDay(timeDayOfWeek_t, EventNum_sc, TimeQuarter_sc, EventState_sc, SwitchState_sc, SwitchNum_sc);
     String SetEventOnce(EventNum_sc, time_t, SwitchState_sc, SwitchNum_sc);
     String TimeToStr(time_t);
     time_t SetTimeOfDay(uint8_t, uint8_t, uint8_t);

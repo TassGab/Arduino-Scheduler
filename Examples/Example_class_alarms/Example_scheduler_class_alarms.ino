@@ -10,16 +10,25 @@
  */
 #include "Heater_scheduler_class.h"
 #include <TimeAlarms.h>
-AlarmId id0,id1,id2;
+#include <Logging_class.h>
+AlarmId id0,id1,id2,id3,id4,id5;
 EventNum_sc ev; //Global var for event of the day 
 HeaterSchedulerCs HS=HeaterSchedulerCs(); //class instance
 void setup() {
   // put your setup code here, to run once:
-
+Log.LogLevel=_Info;
+Log.ZBen=true;
+Log.ZBLogLevel=_Error;
+Log.AutoCR=false;
   Serial.begin(9600);
 //  Serial.print("Day Size=");
 //  Serial.println(sizeof(HS.Sched.WeekSched[0]),DEC);
-  Serial.println(HS.SetEventDay(dowTuesday,Event0,0,swON,sw1));
+  Log.Info(HS.SetEventDay(dowTuesday,Event0,0,evEN,swON,sw1));Log.Info("\n");
+  Log.Info(HS.SetEventDay(dowTuesday,Event1,1,evEN,swOFF,sw1));Log.Info("\n");
+  Log.Info(HS.SetEventDay(dowTuesday,Event2,2,evEN,swON,sw1));Log.Info("\n");
+  Log.Info(HS.SetEventDay(dowTuesday,Event3,3,evEN,swOFF,sw1));Log.Info("\n");
+  Log.Info(HS.SetEventDay(dowTuesday,Event4,4,evEN,swON,sw1));Log.Info("\n");
+  Log.Info(HS.SetEventDay(dowTuesday,Event5,5,evEN,swOFF,sw1));Log.Info("\n");
   setTime(23,59,50,25,9,17); // set time
    //time_t now_t=now();
 //   time_t now_t;
@@ -46,66 +55,206 @@ void loop() {
    if(id==id0) _ev=0;     
    if(id==id1) _ev=1;
    if(id==id2) _ev=2;
-   Serial.print("Event found=");
-   Serial.println(_ev);
+   if(id==id3) _ev=3;
+   if(id==id4) _ev=4;
+   if(id==id5) _ev=5;
+   Log.Debug("Event found="+String(_ev));
+   //Log.Debug(_ev);
   return _ev;
  }
- void OnceOnly() {
-  AlarmId id=  Alarm.getTriggeredAlarmId();
-  ev=FindAlarmID(id);
-  Serial.print("Event number=");
-  Serial.println(ev,DEC);
+ void Event0R() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=0;
+  Log.Info("Triggered Alarm=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
   int dow=weekday()-1;
   // use Alarm.free() to disable a timer and recycle its memory.
 
   if (HS.Sched.WeekSched[dow].Event[ev].EventCtrl.swTurn==swON)
   {
-    Serial.println("Switch ON");
+    Log.Info("Switch ON\n");
   }
   else
   {
-    Serial.println("Switch OFF");
+    Log.Info("Switch OFF\n");
   }
-  Alarm.free(id);
+  Alarm.free(id0);
   // optional, but safest to "forget" the ID after memory recycled
-  id = dtINVALID_ALARM_ID;
+  id0 = dtINVALID_ALARM_ID;
+  // you can also use Alarm.disable() to turn the timer off, but keep
+  // it in memory, to turn back on later with Alarm.enable().
+}
+void Event1R() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=1;
+  Log.Info("Triggered Alarm=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
+  int dow=weekday()-1;
+  // use Alarm.free() to disable a timer and recycle its memory.
+
+  if (HS.Sched.WeekSched[dow].Event[ev].EventCtrl.swTurn==swON)
+  {
+    Log.Info("Switch ON\n");
+  }
+  else
+  {
+    Log.Info("Switch OFF\n");
+  }
+  Alarm.free(id1);
+  // optional, but safest to "forget" the ID after memory recycled
+  id1 = dtINVALID_ALARM_ID;
+  // you can also use Alarm.disable() to turn the timer off, but keep
+  // it in memory, to turn back on later with Alarm.enable().
+}
+void Event2R() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=2;
+  Log.Info("Triggered Alarm=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
+  int dow=weekday()-1;
+  // use Alarm.free() to disable a timer and recycle its memory.
+
+  if (HS.Sched.WeekSched[dow].Event[ev].EventCtrl.swTurn==swON)
+  {
+    Log.Info("Switch ON\n");
+  }
+  else
+  {
+    Log.Info("Switch OFF\n");
+  }
+  Alarm.free(id2);
+  // optional, but safest to "forget" the ID after memory recycled
+  id2 = dtINVALID_ALARM_ID;
+  // you can also use Alarm.disable() to turn the timer off, but keep
+  // it in memory, to turn back on later with Alarm.enable().
+}
+void Event3R() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=3;
+  Log.Info("Triggered Alarm=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
+  int dow=weekday()-1;
+  // use Alarm.free() to disable a timer and recycle its memory.
+
+  if (HS.Sched.WeekSched[dow].Event[ev].EventCtrl.swTurn==swON)
+  {
+    Log.Info("Switch ON\n");
+  }
+  else
+  {
+    Log.Info("Switch OFF\n");
+  }
+  Alarm.free(id3);
+  // optional, but safest to "forget" the ID after memory recycled
+  id3 = dtINVALID_ALARM_ID;
+  // you can also use Alarm.disable() to turn the timer off, but keep
+  // it in memory, to turn back on later with Alarm.enable().
+}
+void Event4R() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=4;
+  Log.Info("Triggered Alarm=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
+  int dow=weekday()-1;
+  // use Alarm.free() to disable a timer and recycle its memory.
+
+  if (HS.Sched.WeekSched[dow].Event[ev].EventCtrl.swTurn==swON)
+  {
+    Log.Info("Switch ON\n");
+  }
+  else
+  {
+    Log.Info("Switch OFF\n");
+  }
+  Alarm.free(id4);
+  // optional, but safest to "forget" the ID after memory recycled
+  id4 = dtINVALID_ALARM_ID;
+  // you can also use Alarm.disable() to turn the timer off, but keep
+  // it in memory, to turn back on later with Alarm.enable().
+}
+void Event5R() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=5;
+  Log.Info("Triggered Alarm=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
+  int dow=weekday()-1;
+  // use Alarm.free() to disable a timer and recycle its memory.
+
+  if (HS.Sched.WeekSched[dow].Event[ev].EventCtrl.swTurn==swON)
+  {
+    Log.Info("Switch ON\n");
+  }
+  else
+  {
+    Log.Info("Switch OFF\n");
+  }
+  Alarm.free(id5);
+  // optional, but safest to "forget" the ID after memory recycled
+  id5 = dtINVALID_ALARM_ID;
   // you can also use Alarm.disable() to turn the timer off, but keep
   // it in memory, to turn back on later with Alarm.enable().
 }
 void UpdateSched()
 {
-  Serial.println("update Schedule");
+  Log.Info("update Schedule\n");
   int dow=weekday()-1;
 //Serial.print(dow); 
-//    if (HS.Sched.WeekSched[dow].Event[Event0].EventCtrl.isEnabled==evEN)
-//    {
-      id0=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event0].EvTimeQ), OnceOnly);
-      Serial.println(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event0]));
-      
-//    }
-//     if (HS.Sched.WeekSched[dow].Event[Event1].EventCtrl.isEnabled==evEN)
-//    {
-//      id1=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event1].EvTimeQ), OnceOnly);
-//      Serial.println("id1");
-//    }
-//   if (HS.Sched.WeekSched[dow].Event[Event2].EventCtrl.isEnabled==evEN)
-//    {
-//      id2=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event2].EvTimeQ), OnceOnly);
-//      Serial.println("id2");
-//    }
+    
+    if (HS.Sched.WeekSched[dow].Event[Event0].EventCtrl.isEnabled==evEN)
+    {
+      id0=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event0].EvTimeQ), Event0R);
+      Log.Info("id0: ");
+      Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event0]));
+      Log.Info("\n");
+    }
+     if (HS.Sched.WeekSched[dow].Event[Event1].EventCtrl.isEnabled==evEN)
+    {
+      id1=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event1].EvTimeQ), Event1R);
+      Log.Info("id1: ");
+      Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event1]));
+      Log.Info("\n");
+    }
+   if (HS.Sched.WeekSched[dow].Event[Event2].EventCtrl.isEnabled==evEN)
+    {
+      id2=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event2].EvTimeQ), Event2R);
+      Log.Info("id2: ");
+      Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event2]));
+      Log.Info("\n");
+    }
+    if (HS.Sched.WeekSched[dow].Event[Event3].EventCtrl.isEnabled==evEN)
+    {
+      id3=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event3].EvTimeQ), Event3R);
+      Log.Info("id3: ");
+      Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event3]));
+      Log.Info("\n");
+    }
+     if (HS.Sched.WeekSched[dow].Event[Event4].EventCtrl.isEnabled==evEN)
+    {
+      id4=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event4].EvTimeQ), Event4R);
+      Log.Info("id4: ");
+      Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event4]));
+      Log.Info("\n");
+    }
+     if (HS.Sched.WeekSched[dow].Event[Event5].EventCtrl.isEnabled==evEN)
+    {
+      id5=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event5].EvTimeQ), Event5R);
+      Log.Info("id5: ");
+      Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event5]));
+      Log.Info("\n");
+    }
 }
 void digitalClockDisplay() {
   // digital clock display of the time
-  Serial.print(hour());
+  Log.Info(String(hour()));
   printDigits(minute());
   printDigits(second());
-  Serial.println();
+  Log.Info("\n");
 }
 
 void printDigits(int digits) {
-  Serial.print(":");
+  Log.Info(":");
   if (digits < 10)
-    Serial.print('0');
-  Serial.print(digits);
+    Log.Info("0");
+  Log.Info(String(digits));
 }
 
