@@ -37,20 +37,22 @@ typedef struct
 typedef struct
 {
   DaySchedule_sc WeekSched[7]; //Array of DaySchedule_sc representing the week schedule
-  EventFuture_sc EventFuture[nEventFuture];
+  EventFuture_sc EventFuture[nEventFuture]; //Event once in a certain time
 } Sched_sc;
 class HeaterSchedulerCs
 {
   public:
     Sched_sc Sched;
     String SetEventDay(timeDayOfWeek_t, EventNum_sc, TimeQuarter_sc, EventState_sc, SwitchState_sc, SwitchNum_sc);
-    String SetEventOnce(EventNum_sc, time_t, SwitchState_sc, SwitchNum_sc);
+    String SetEventOnce(EventNum_sc, time_t, EventState_sc, SwitchState_sc, SwitchNum_sc);
     String TimeToStr(time_t);
     time_t SetTimeOfDay(uint8_t, uint8_t, uint8_t);
     time_t QuartToTime(TimeQuarter_sc);
+    time_t SetTimeEvent(uint8_t, uint8_t, uint8_t,uint8_t, uint8_t, uint8_t);
     String EventToStrShort(EventType_sc);
+    String EventOnceToStrShort(EventFuture_sc); 
   private:
-    
+
     String EventToStrLong(EventType_sc);    
 };
 #endif

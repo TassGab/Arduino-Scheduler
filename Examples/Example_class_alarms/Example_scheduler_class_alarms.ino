@@ -11,7 +11,7 @@
 #include "Heater_scheduler_class.h"
 #include <TimeAlarms.h>
 #include <Logging_class.h>
-AlarmId id0,id1,id2,id3,id4,id5;
+AlarmId id0,id1,id2,id3,id4,id5,idse0,idse1;
 EventNum_sc ev; //Global var for event of the day 
 HeaterSchedulerCs HS=HeaterSchedulerCs(); //class instance
 void setup() {
@@ -29,6 +29,8 @@ Log.AutoCR=false;
   Log.Info(HS.SetEventDay(dowTuesday,Event3,3,evEN,swOFF,sw1));Log.Info("\n");
   Log.Info(HS.SetEventDay(dowTuesday,Event4,4,evEN,swON,sw1));Log.Info("\n");
   Log.Info(HS.SetEventDay(dowTuesday,Event5,5,evEN,swOFF,sw1));Log.Info("\n");
+  Log.Info(HS.SetEventOnce(0,HS.SetTimeEvent(0,1,0,26,9,2017),evEN,swON,sw1));Log.Info("\n");
+  Log.Info(HS.SetEventOnce(1,HS.SetTimeEvent(0,1,5,26,9,2017),evEN,swOFF,sw1));Log.Info("\n");
   setTime(23,59,50,25,9,17); // set time
    //time_t now_t=now();
 //   time_t now_t;
@@ -194,6 +196,50 @@ void Event5R() {
   // you can also use Alarm.disable() to turn the timer off, but keep
   // it in memory, to turn back on later with Alarm.enable().
 }
+void EventOnce0() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=0;
+  Log.Info("Triggered Alarm Single Event=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
+  
+  // use Alarm.free() to disable a timer and recycle its memory.
+
+  if (HS.Sched.EventFuture[ev].EventCtrl.swTurn==swON)
+  {
+    Log.Info("Switch ON\n");
+  }
+  else
+  {
+    Log.Info("Switch OFF\n");
+  }
+  Alarm.free(idse0);
+  // optional, but safest to "forget" the ID after memory recycled
+  idse0 = dtINVALID_ALARM_ID;
+  // you can also use Alarm.disable() to turn the timer off, but keep
+  // it in memory, to turn back on later with Alarm.enable().
+}
+void EventOnce1() {
+  //AlarmId id=  Alarm.getTriggeredAlarmId();
+  ev=1;
+  Log.Info("Triggered Alarm Single Event=");Log.Info(String(ev)); Log.Info("\n");
+  //Serial.println(ev,DEC);
+  
+  // use Alarm.free() to disable a timer and recycle its memory.
+
+  if (HS.Sched.EventFuture[ev].EventCtrl.swTurn==swON)
+  {
+    Log.Info("Switch ON\n");
+  }
+  else
+  {
+    Log.Info("Switch OFF\n");
+  }
+  Alarm.free(idse1);
+  // optional, but safest to "forget" the ID after memory recycled
+  idse1 = dtINVALID_ALARM_ID;
+  // you can also use Alarm.disable() to turn the timer off, but keep
+  // it in memory, to turn back on later with Alarm.enable().
+}
 void UpdateSched()
 {
   Log.Info("update Schedule\n");
@@ -242,6 +288,21 @@ void UpdateSched()
       Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event5]));
       Log.Info("\n");
     }
+    if (HS.Sched.EventFuture[0].EventCtrl.isEnabled==evEN)
+    {
+      idse0=Alarm.triggerOnce(HS.Sched.EventFuture[0].TimeEv, EventOnce0);
+      Log.Info("idse0: ");
+      Log.Info(HS.EventOnceToStrShort(HS.Sched.EventFuture[0]));
+      Log.Info("\n");
+    }
+    if (HS.Sched.EventFuture[1].EventCtrl.isEnabled==evEN)
+    {
+      idse1=Alarm.triggerOnce(HS.Sched.EventFuture[1].TimeEv, EventOnce1);
+      Log.Info("idse1: ");
+      Log.Info(HS.EventOnceToStrShort(HS.Sched.EventFuture[1]));
+;      Log.Info("\n");
+    }
+    
 }
 void digitalClockDisplay() {
   // digital clock display of the time
