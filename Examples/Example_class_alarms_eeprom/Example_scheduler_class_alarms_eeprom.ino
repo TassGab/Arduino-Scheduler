@@ -17,11 +17,11 @@ EventNum_sc ev; //Global var for event of the day
 HeaterSchedulerCs HS=HeaterSchedulerCs(); //class instance
 void setup() {
   // put your setup code here, to run once:
+Serial.begin(9600);
 Log.LogLevel=_Verbose;
 Log.ZBen=true;
 Log.ZBLogLevel=_Error;
 Log.AutoCR=false;
-  Serial.begin(9600);
 //  Serial.print("Day Size=");
 //  Serial.println(sizeof(HS.Sched.WeekSched[0]),DEC);
   Log.Info(HS.SetEventDay(dowTuesday,Event0,0,evEN,swON,sw1));Log.Info("\n");

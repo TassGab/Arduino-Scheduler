@@ -47,7 +47,7 @@ class HeaterSchedulerCs
 {
   public:
     Sched_sc Sched;
-    //HeaterSchedulerCs();    
+    HeaterSchedulerCs();    
     String SetEventDay(timeDayOfWeek_t, EventNum_sc, TimeQuarter_sc, EventState_sc, SwitchState_sc, SwitchNum_sc);
     String SetEventOnce(EventNum_sc, time_t, EventState_sc, SwitchState_sc, SwitchNum_sc);
     String TimeToStr(time_t);
@@ -62,9 +62,9 @@ class HeaterSchedulerCs
     void WrEEPROMevent(uint8_t,EventFuture_sc);
     
   private:
-    int eeAddress=0;
-    int daystructsize=23;
-    int eventstructsize=25;
+    int GetEEoffAddress=0;
+    int GetEEdaystructsize=0;
+    int GetEEeventstructsize=0;
     String EventToStrLong(EventType_sc);
     void DayDeepCp(DaySchedule_sc, DaySchedule_sc); 
     void EvDeepCp(EventFuture_sc,EventFuture_sc);

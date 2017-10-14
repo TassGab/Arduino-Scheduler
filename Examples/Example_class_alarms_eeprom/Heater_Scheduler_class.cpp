@@ -1,16 +1,25 @@
 #include "Heater_scheduler_class.h"
 #include <Arduino.h>
-//HeaterSchedulerCs::HeaterSchedulerCs(void)
-//{
-//  //daystructsize=sizeof(Sched.WeekSched[0]);
-//  daystructsize=23;
-//  Log.Verbose("day struct size=");
-//  Log.Verbose(String(daystructsize));Log.Verbose("\n");
-//  eventstructsize=sizeof(Sched.EventFuture[0]);
-//  Log.Verbose("Event once struct size=");
-//  Log.Verbose(String(eventstructsize));Log.Verbose("\n");
-//  return;
-//}
+HeaterSchedulerCs::HeaterSchedulerCs(void)
+{
+  //GetEEoffAddres=0;
+  GetEEdaystructsize=sizeof(Sched.WeekSched[0]);
+  //daystructsize=23;  
+  GetEEeventstructsize=sizeof(Sched.EventFuture[0]);
+  return;
+}
+//int HeaterSchedulerCs::GetEEoffAddress()
+// {
+//  return 0; 
+// }
+// int HeaterSchedulerCs::GetEEdaystructsize()
+// {
+//  return sizeof(Sched. WeekSched[0]);
+// }
+// int HeaterSchedulerCs::GetEEeventstructsize()
+// {
+//  return sizeof(Sched.EventFuture[0]);
+//  }
 String HeaterSchedulerCs::SetEventDay(timeDayOfWeek_t dow, EventNum_sc Evnum, TimeQuarter_sc TimeQ, EventState_sc En, SwitchState_sc SwSt, SwitchNum_sc SwN)
  {
    String s="Dow: ";   
@@ -141,26 +150,26 @@ String HeaterSchedulerCs::TimeToStr(time_t tt)
  void HeaterSchedulerCs::RdEEPROMday(timeDayOfWeek_t dow)
  {
    DaySchedule_sc daysc;
-   int addr=int(daystructsize*dow)+eeAddress;
+   int addr=int(GetEEdaystructsize*dow)+GetEEoffAddress;
    EEPROM.get(addr,daysc);
    DayDeepCp(daysc,Sched.WeekSched[dow-1]);
    Log.Verbose("EEPROM read at=");
    Log.Verbose(String(addr));Log.Verbose("\n");
  }
-void RdEEPROMevent(uint8_t evnum)
+void HeaterSchedulerCs::RdEEPROMevent(uint8_t evnum)
  {
   EventFuture_sc evsc;
  }
- void WrEEPROMday(timeDayOfWeek_t dow ,DaySchedule_sc daysc)
+ void HeaterSchedulerCs:: WrEEPROMday(timeDayOfWeek_t dow ,DaySchedule_sc daysc)
  {
-  int addr;
-  //addr=int(daystructsize*dow)+eeAddress;
-  addr=23;
+  int addr;  
+  addr=int(GetEEdaystructsize*dow)+GetEEoffAddress;
   EEPROM.put(addr,daysc);
   Log.Verbose("EEPROM write at=");
   Log.Verbose(String(addr));Log.Verbose("\n");
+  return;
  }
- void DayDeepCp(DaySchedule_sc orig, DaySchedule_sc dest)
+ void HeaterSchedulerCs::DayDeepCp(DaySchedule_sc orig, DaySchedule_sc dest)
  {
    dest.dow=orig.dow;
    for (int i=0; i< nEventPerDay ;i++)
@@ -169,10 +178,12 @@ void RdEEPROMevent(uint8_t evnum)
     dest.Event[i].EventCtrl.isEnabled=orig.Event[i].EventCtrl.isEnabled;
     dest.Event[i].EventCtrl.nSwitch=orig.Event[i].EventCtrl.nSwitch;
     dest.Event[i].EventCtrl.swTurn=orig.Event[i].EventCtrl.swTurn;
+    return;
    }
  }
- void EvDeepCp(EventFuture_sc,EventFuture_sc)
+ void HeaterSchedulerCs::EvDeepCp(EventFuture_sc,EventFuture_sc)
  {
-  
+   return;
  }
+ 
 
