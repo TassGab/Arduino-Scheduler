@@ -24,6 +24,7 @@ Log.ZBLogLevel=_Error;
 Log.AutoCR=false;
 //  Serial.print("Day Size=");
 //  Serial.println(sizeof(HS.Sched.WeekSched[0]),DEC);
+  HS.EEPromDefault();
   Log.Info(HS.SetEventDay(dowTuesday,Event0,0,evEN,swON,sw1));Log.Info("\n");
   Log.Info(HS.SetEventDay(dowTuesday,Event1,1,evEN,swOFF,sw1));Log.Info("\n");
   Log.Info(HS.SetEventDay(dowTuesday,Event2,2,evEN,swON,sw1));Log.Info("\n");
@@ -246,7 +247,7 @@ void UpdateSched()
   Log.Info("update Schedule\n");
   int dow=weekday()-1;
 //Serial.print(dow); 
-    
+  HS.RdEEPROMday(dow+1);
     if (HS.Sched.WeekSched[dow].Event[Event0].EventCtrl.isEnabled==evEN)
     {
       id0=Alarm.timerOnce(HS.QuartToTime(HS.Sched.WeekSched[dow].Event[Event0].EvTimeQ), Event0R);
@@ -289,6 +290,7 @@ void UpdateSched()
       Log.Info(HS.EventToStrShort(HS.Sched.WeekSched[dow].Event[Event5]));
       Log.Info("\n");
     }
+    HS.RdEEPROMevent(0);
     if (HS.Sched.EventFuture[0].EventCtrl.isEnabled==evEN)
     {
       idse0=Alarm.triggerOnce(HS.Sched.EventFuture[0].TimeEv, EventOnce0);
@@ -296,6 +298,7 @@ void UpdateSched()
       Log.Info(HS.EventOnceToStrShort(HS.Sched.EventFuture[0]));
       Log.Info("\n");
     }
+    HS.RdEEPROMevent(1);
     if (HS.Sched.EventFuture[1].EventCtrl.isEnabled==evEN)
     {
       idse1=Alarm.triggerOnce(HS.Sched.EventFuture[1].TimeEv, EventOnce1);

@@ -58,8 +58,9 @@ class HeaterSchedulerCs
     String EventOnceToStrShort(EventFuture_sc); 
     void RdEEPROMday(timeDayOfWeek_t);
     void RdEEPROMevent(uint8_t);
-    void WrEEPROMday(timeDayOfWeek_t,DaySchedule_sc);
+    void WrEEPROMday(DaySchedule_sc);
     void WrEEPROMevent(uint8_t,EventFuture_sc);
+    void EEPromDefault();
     
   private:
     int GetEEoffAddress=0;
@@ -68,5 +69,6 @@ class HeaterSchedulerCs
     String EventToStrLong(EventType_sc);
     void DayDeepCp(DaySchedule_sc, DaySchedule_sc); 
     void EvDeepCp(EventFuture_sc,EventFuture_sc);
+    
 };
 #endif

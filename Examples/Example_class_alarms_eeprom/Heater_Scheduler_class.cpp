@@ -150,24 +150,39 @@ String HeaterSchedulerCs::TimeToStr(time_t tt)
  void HeaterSchedulerCs::RdEEPROMday(timeDayOfWeek_t dow)
  {
    DaySchedule_sc daysc;
-   int addr=int(GetEEdaystructsize*dow)+GetEEoffAddress;
+   int addr=int(GetEEdaystructsize*(dow-1))+GetEEoffAddress;
    EEPROM.get(addr,daysc);
    DayDeepCp(daysc,Sched.WeekSched[dow-1]);
    Log.Verbose("EEPROM read at=");
    Log.Verbose(String(addr));Log.Verbose("\n");
  }
-void HeaterSchedulerCs::RdEEPROMevent(uint8_t evnum)
+void HeaterSchedulerCs::RdEEPROMevent(uint8_t _evnum)
  {
   EventFuture_sc evsc;
+   int addr=0;
+   addr=int(GetEEeventstructsize*(_evnum))+GetEEdaystructsize*7+GetEEoffAddress;
+   EEPROM.get(addr,evsc);
+   EvDeepCp(evsc,Sched.EventFuture[_evnum]);
+   Log.Verbose("EEPROM read at=");
+   Log.Verbose(String(addr));Log.Verbose("\n");
+   return;
  }
- void HeaterSchedulerCs:: WrEEPROMday(timeDayOfWeek_t dow ,DaySchedule_sc daysc)
+ void HeaterSchedulerCs:: WrEEPROMday(DaySchedule_sc daysc)
  {
   int addr;  
-  addr=int(GetEEdaystructsize*dow)+GetEEoffAddress;
+  addr=int(GetEEdaystructsize*(daysc.dow-1))+GetEEoffAddress;
   EEPROM.put(addr,daysc);
   Log.Verbose("EEPROM write at=");
   Log.Verbose(String(addr));Log.Verbose("\n");
   return;
+ }
+  void HeaterSchedulerCs:: WrEEPROMevent(uint8_t _evnum,EventFuture_sc evsc)
+ {
+  int addr;  
+  addr=int(GetEEeventstructsize*(_evnum))+GetEEdaystructsize*7+GetEEoffAddress;
+  EEPROM.put(addr,evsc);
+  Log.Verbose("EEPROM write at=");
+  Log.Verbose(String(addr));Log.Verbose("\n");
  }
  void HeaterSchedulerCs::DayDeepCp(DaySchedule_sc orig, DaySchedule_sc dest)
  {
@@ -181,9 +196,23 @@ void HeaterSchedulerCs::RdEEPROMevent(uint8_t evnum)
     return;
    }
  }
- void HeaterSchedulerCs::EvDeepCp(EventFuture_sc,EventFuture_sc)
+ void HeaterSchedulerCs::EvDeepCp(EventFuture_sc orig,EventFuture_sc dest)
  {
+   dest.TimeEv=orig.TimeEv;
+   dest.EventCtrl.isEnabled=orig.EventCtrl.isEnabled;
+   dest.EventCtrl.nSwitch=orig.EventCtrl.nSwitch;
+   dest.EventCtrl.swTurn=orig.EventCtrl.swTurn;
    return;
+ }
+ void HeaterSchedulerCs::EEPromDefault()
+ {
+  for (int _dow=0; _dow<7; _dow++)
+  {
+    Sched.WeekSched[_dow].dow=_dow+1;
+    WrEEPROMday(Sched.WeekSched[_dow]);
+  }
+  WrEEPROMevent(0,Sched.EventFuture[0]);
+  WrEEPROMevent(1,Sched.EventFuture[1]);
  }
  
 
